@@ -3,3 +3,4 @@ coverage/
 outputs/
 dist/
 custom-outputs/
+test-destination/

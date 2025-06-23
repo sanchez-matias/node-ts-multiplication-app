@@ -25,6 +25,6 @@ export class ServerApp {
 
         (wasSaved)
             ? console.log('ARCHIVO CREADO CORRECTAMENTE ✅')
-            : console.log('ERROR CREANDO EL ARCHIVO!!! ❌')
+            : console.error('ERROR CREANDO EL ARCHIVO!!! ❌')
     }
 }

@@ -1,8 +1,3 @@
-import { yarg } from './yargs.plugin';
-
-
-// Modifico my process.argv para que solo tenga los parámetros que yo necesito que tenga
-// Después importo de forma dinámica el plugin y lo retorno en la función para su uso especifico
 const runCommand = async (args: string[]) => {
     process.argv = [...process.argv, ...args];
 
@@ -12,10 +7,46 @@ const runCommand = async (args: string[]) => {
 };
 
 describe('Test yargs.plugin.ts', () => {
-    test('should return default values', async () => {
-        // const argv = await runCommand(['-b', '5']);
-        console.log(yarg);
+    // Parte para resetear los valores del argv entre cada uno de los test
+    const originalArgv = process.argv;
 
-        expect(true).toBe(true);
+    beforeEach(() => {
+        process.argv = originalArgv;
+        jest.resetModules();
+    });
+
+    test('should return default values', async() => {
+
+        const argv = await runCommand(['-b', '5']);
+        // console.log(argv);
+
+        expect(argv).toEqual(expect.objectContaining({
+            b: 5,
+            l: 10,
+            s: false,
+            n: 'table',
+            d: './outputs',
+        }));
+
+    });
+
+    test('should return configuration with custom values', async() => {
+
+        const argv = await runCommand([
+            '-b', '9', 
+            '-l', '20', 
+            '-s', 'true', 
+            '-n', 'custom-name', 
+            '-d', './custom-directory',
+        ]);
+
+        expect(argv).toEqual(expect.objectContaining({
+            b: 9,
+            l: 20,
+            s: true,
+            n: 'custom-name',
+            d: './custom-directory',
+        }));
+
     });
 });
